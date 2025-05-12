@@ -1,0 +1,2 @@
+# https://chaos-mesh.org/docs/simulate-heavy-stress-on-kubernetes/
+http://127.0.0.1:30010/#/experiments/b3084b85-8013-40d8-9c00-1b3719733475
