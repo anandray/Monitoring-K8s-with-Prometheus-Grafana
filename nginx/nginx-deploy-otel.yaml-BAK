@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        # NGINX Container
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: nginx-conf
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+
+        # OpenTelemetry Collector Sidecar
+        - name: otel-collector
+          volumeMounts:
+            - name: otel-collector-config-vol
+              mountPath: /conf
+
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf
+        - name: otel-collector-config-vol
+          configMap:
+            name: otel-collector-conf
+            items:
+              - key: otel-collector-config
+                path: otel-collector-config.yaml
+            namespace: monitoring

@@ -124,6 +124,10 @@ data:
             scrape_interval: 10s
             static_configs:
             - targets: ['prometheus-kube-state-metrics:8080']
+          - job_name: "nginx"
+            scrape_interval: 10s
+            static_configs:
+            - targets: ["prometheus-prometheus-node-exporter:9100"]  # NGINX Prometheus exporter endpoint
     processors:
       batch:
       memory_limiter:
@@ -140,7 +144,7 @@ data:
         tls:
           insecure: true
       prometheusremotewrite:
-        endpoint: http://prometheus-server-ext:30001/api/v1/write
+        endpoint: http://prometheus-server/api/v1/write
     service:
       extensions: [zpages]
       pipelines:
@@ -151,7 +155,11 @@ data:
         metrics:
           receivers: [prometheus]
           processors: [batch]
-          exporters: [prometheusremotewrite]
+          exporters: [prometheusremotewrite, otlp]
+        logs:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlp]
 ---
 apiVersion: v1
 kind: Service

@@ -1,2 +1,53 @@
 # Monitoring-Kubernetes-with-Prometheus-Grafana
-  Setup Prometheus &amp; Grafana Monitoring on Kubernetes using Helm
+** Setup Prometheus &amp; Grafana Monitoring on Kubernetes using Helm **
+
+Steps to Install Prometheus:
+--------------------------------
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus prometheus-community/prometheus --namespace monitoring
+#kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+#minikube service prometheus-server-ext
+
+##For Docker K8s:
+# Prometheus Server
+kubectl expose service -n monitoring prometheus-server --type=LoadBalancer --target-port=9090 --port=30001 --name=prometheus-server-ext 
+
+# Prometheus Alert Manager
+kubectl expose service -n monitoring prometheus-alertmanager --type=LoadBalancer --target-port=9093 --port=30003 --name=prometheus-alertmanager-ext
+
+Steps to install Grafana:
+--------------------------
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install grafana stable/grafana --namespace monitoring
+#kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+#minikube service grafana-ext
+##For Docker K8s:
+kubectl expose service -n monitoring grafana --type=LoadBalancer --target-port=3000 --port=30002 --name=grafana-ext
+
+To get user name and password in Grafana:
+
+#kubectl get secret --namespace monitoring grafana -o yaml
+#echo "RkpwY21aTFNXRDVJN3Z4RWFFUjlibkV1SDBDbnFBendadmc0bmROZQ==" | openssl base64 -d ; echo
+kubectl get secret --namespace monitoring grafana -o yaml | grep admin-password | cut -d " " -f4 | base64 -d
+
+or 
+
+kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+----------------------------------------------------------
+
+Dashboards: https://grafana.com/grafana/dashboards/6417
+Grafana playlist: https://www.youtube.com/playlist?list=PLVx1qovxj-akOGKSoQ5sGc5ZRfH8Tpnow
+Prometheus Playlist: https://www.youtube.com/playlist?list=PLVx1qovxj-anCTn6um3BDsoHnIr0O2tz3
+
+#Grafana Dashboard Plugins
+- 1860 - Good one
+- 315
+- 6417
+- 15661
+- 15757
+- 15758
+- 15759 - X

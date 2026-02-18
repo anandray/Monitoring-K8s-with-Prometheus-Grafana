@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-conf
+  labels:
+    app: opentelemetry
+    component: otel-collector-conf
+data:
+  otel-collector-config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: ${env:MY_POD_IP}:4317
+          http:
+            endpoint: ${env:MY_POD_IP}:4318
+      prometheus:
+        config:
+          scrape_configs:
+          - job_name: 'otel-node-exporter'
+            scrape_interval: 10s
+            static_configs:
+            - targets: ['10.96.165.147:9100']
+          - job_name: 'otel-kube-state-metrics'
+            scrape_interval: 10s
+            static_configs:
+            - targets: ['10.96.70.177:8080']
+          - job_name: "nginx"
+            scrape_interval: 10s
+            static_configs:
+              - targets: ["10.96.165.147:9100"]  # NGINX Prometheus exporter endpoint
+    processors:
+      batch:
+      memory_limiter:
+        # 80% of maximum memory up to 2G
+        limit_mib: 1500
+        # 25% of limit up to 2G
+        spike_limit_mib: 512
+        check_interval: 5s
+    extensions:
+      zpages: {}
+    exporters:
+      debug:
+        verbosity: detailed
+      otlphttp:
+        endpoint: "localhost:4318"
+      otlp:
+        endpoint: "localhost:4317"
+        tls:
+          insecure: true
+      prometheusremotewrite:
+        endpoint: http://10.96.90.103:30001/api/v1/write # prometheus-server-ext
+    service:
+      extensions: [zpages]
+      pipelines:
+        traces/1:
+          receivers: [otlp]
+          processors: [memory_limiter, batch]
+          exporters: [debug, otlp]
+        metrics:
+          receivers: [prometheus]
+          processors: [batch]
+          exporters: [prometheusremotewrite, debug, otlp]
+        logs:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [debug, otlp]

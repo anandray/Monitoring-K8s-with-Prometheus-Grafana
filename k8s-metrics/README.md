@@ -24,3 +24,12 @@ Alternatively you can download the file and deploy it from the local path:
 kubectl apply --server-side -f keda-2.17.0.yaml
 # Without admission webhooks
 kubectl apply --server-side -f keda-2.17.0-core.yaml
+
+#Kubernetes HPA Autoscaling with External metrics — Part 1
+#https://medium.com/@matteo.candido/kubernetes-hpa-autoscaling-with-external-metrics-b225289b9206
+
+#Auto-Scaling based on Prometheus Custom Metrics
+#https://medium.com/engineering-housing/auto-scaling-based-on-prometheus-custom-metrics-688a92e0a796
+
+#Configuring the Kubernetes Horizontal Pod Autoscaler to scale based on custom metrics from Prometheus
+#https://www.bigbinary.com/blog/prometheus-adapter
