@@ -12,10 +12,14 @@ helm install prometheus prometheus-community/prometheus --namespace monitoring
 ```
 ##For Docker K8s:
 # Prometheus Server
-```kubectl expose service -n monitoring prometheus-server --type=LoadBalancer --target-port=9090 --port=30001 --name=prometheus-server-ext```
+```
+kubectl expose service -n monitoring prometheus-server --type=LoadBalancer --target-port=9090 --port=30001 --name=prometheus-server-ext
+```
 
 # Prometheus Alert Manager
-```kubectl expose service -n monitoring prometheus-alertmanager --type=LoadBalancer --target-port=9093 --port=30003 --name=prometheus-alertmanager-ext```
+```
+kubectl expose service -n monitoring prometheus-alertmanager --type=LoadBalancer --target-port=9093 --port=30003 --name=prometheus-alertmanager-ext
+```
 
 Steps to install Grafana:
 --------------------------
