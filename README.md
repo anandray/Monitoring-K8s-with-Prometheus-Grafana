@@ -3,13 +3,13 @@
 
 Steps to Install Prometheus:
 --------------------------------
-
-- helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-- helm repo update
-- helm install prometheus prometheus-community/prometheus --namespace monitoring
-- #kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
-- #minikube service prometheus-server-ext
-
+```
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus prometheus-community/prometheus --namespace monitoring
+#kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+#minikube service prometheus-server-ext
+```
 ##For Docker K8s:
 # Prometheus Server
 kubectl expose service -n monitoring prometheus-server --type=LoadBalancer --target-port=9090 --port=30001 --name=prometheus-server-ext 
