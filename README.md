@@ -46,9 +46,9 @@ kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-pass
 ```
 ----------------------------------------------------------
 
-Dashboards: https://grafana.com/grafana/dashboards/6417
-Grafana playlist: https://www.youtube.com/playlist?list=PLVx1qovxj-akOGKSoQ5sGc5ZRfH8Tpnow
-Prometheus Playlist: https://www.youtube.com/playlist?list=PLVx1qovxj-anCTn6um3BDsoHnIr0O2tz3
+- Dashboards: https://grafana.com/grafana/dashboards/6417
+- Grafana playlist: https://www.youtube.com/playlist?list=PLVx1qovxj-akOGKSoQ5sGc5ZRfH8Tpnow
+- Prometheus Playlist: https://www.youtube.com/playlist?list=PLVx1qovxj-anCTn6um3BDsoHnIr0O2tz3
 
 #Grafana Dashboard Plugins
 - 1860 - Good one
